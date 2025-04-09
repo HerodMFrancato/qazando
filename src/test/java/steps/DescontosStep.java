@@ -3,10 +3,14 @@ package steps;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Quando;
 import io.cucumber.java.pt.Entao;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class DescontosStep {
 
@@ -17,6 +21,8 @@ public class DescontosStep {
         navegador = new ChromeDriver();
         navegador.manage().window().maximize();
         navegador.get("https://qazando.com.br/curso.html");
+        WebElement botao = navegador.findElement(By.id("btn-ver-cursos"));
+        Assert.assertTrue("Não acessou a aplicação", botao.isDisplayed());
     }
 
     @Quando("eu preencho meu e-mail")
@@ -35,7 +41,9 @@ public class DescontosStep {
 
     @Entao("eu vejo o código de desconto")
     public void eu_vejo_o_codigo_de_desconto() {
-        String cupom = navegador.findElement(By.cssSelector("#cupom > h2 > span")).getText();
+        WebElement elementoCupom = navegador.findElement(By.cssSelector("#cupom > h2 > span"));
+        Assert.assertTrue("O cupom não está visível na tela", elementoCupom.isDisplayed());
+        String cupom = elementoCupom.getText();
         System.out.println("Código de desconto: " + cupom);
         navegador.quit();
     }
